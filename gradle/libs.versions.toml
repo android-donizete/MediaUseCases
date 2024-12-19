@@ -13,10 +13,14 @@ composeBom = "2024.12.01"
 kotlinSerialization = "2.1.0"
 kotlinSerializationJson = "1.8.0-RC"
 
+concurrentFutures = "1.2.0"
+
 hilt = "2.51.1"
 
 navigationCompose = "2.8.5"
 hiltCompose = "1.2.0"
+
+camerax = "1.5.0-alpha04"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -36,11 +40,23 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 
 kotlin-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerializationJson" }
 
+concurrent-futures = { group = "androidx.concurrent", name = "concurrent-futures-ktx", version.ref = "concurrentFutures" }
+
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 hilt-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltCompose" }
+
+camerax-core = { group = "androidx.camera", name = "camera-core", version.ref = "camerax" }
+camerax-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camerax" }
+
+[bundles]
+camerax = [
+    "concurrent-futures",
+    "camerax-core",
+    "camerax-lifecycle"
+]
 
 [plugins]
 android-library = { id = "com.android.library", version.ref = "agp" }

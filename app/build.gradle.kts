@@ -61,6 +61,8 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.hilt.compose)
 
+    implementation(libs.bundles.camerax)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
