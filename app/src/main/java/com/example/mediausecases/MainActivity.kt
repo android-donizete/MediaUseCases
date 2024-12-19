@@ -4,26 +4,31 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.mediausecases.ui.theme.MediaUseCasesTheme
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.serialization.Serializable
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             MediaUseCasesTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                val controller = rememberNavController()
+                NavHost(controller, Home("my dear user")) {
+                    composable<Home> {
+                        HomeScreen()
+                    }
                 }
             }
         }
@@ -31,17 +36,20 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun HomeScreen() {
+    val viewModel = hiltViewModel<HomeViewModel>()
+    val home = viewModel.home
+    HomeScreenInternal(home)
 }
 
-@Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    MediaUseCasesTheme {
-        Greeting("Android")
+fun HomeScreenInternal(home: Home) {
+    Scaffold { paddings ->
+        Text("Hello, ${home.username}", Modifier.padding(paddings))
     }
 }
+
+@Serializable
+data class Home(
+    val username: String
+)
