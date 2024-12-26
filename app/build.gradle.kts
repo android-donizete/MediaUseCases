@@ -63,6 +63,9 @@ dependencies {
 
     implementation(libs.bundles.camerax)
 
+    implementation(project(":core"))
+    implementation(project(":camerax"))
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
