@@ -1,7 +1,7 @@
 [versions]
-agp = "8.9.0-alpha06"
-kotlin = "2.0.21"
-ksp = "2.0.21-1.0.28"
+agp = "8.9.0-alpha07"
+kotlin = "2.1.0"
+ksp = "2.1.0-1.0.29"
 coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -15,12 +15,14 @@ kotlinSerializationJson = "1.8.0-RC"
 
 concurrentFutures = "1.2.0"
 
-hilt = "2.51.1"
+hilt = "2.53.1"
 
 navigationCompose = "2.8.5"
 hiltCompose = "1.2.0"
 
 camerax = "1.5.0-alpha04"
+appcompat = "1.7.0"
+material = "1.12.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -50,6 +52,8 @@ hilt-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", vers
 
 camerax-core = { group = "androidx.camera", name = "camera-core", version.ref = "camerax" }
 camerax-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camerax" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [bundles]
 camerax = [
