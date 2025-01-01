@@ -1,13 +1,13 @@
 package com.example.core
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavGraphBuilder
 
 interface Feature {
-    fun name(): String
-
     @Composable
-    fun MenuIcon()
+    fun Preview()
 
-    @Composable
-    fun Body()
+    fun id(): String
+
+    fun NavGraphBuilder.start()
 }
