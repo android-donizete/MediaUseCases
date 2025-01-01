@@ -18,11 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import com.example.core.Feature
+import com.example.core.FeatureEntryPoint
 import com.example.core.theme.MediaUseCasesTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -30,7 +31,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @Inject
-    lateinit var features: Set<@JvmSuppressWildcards Feature>
+    lateinit var featureEntryPoints: Set<@JvmSuppressWildcards FeatureEntryPoint>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,15 +41,15 @@ class MainActivity : ComponentActivity() {
                 val controller = rememberNavController()
                 NavHost(controller, "main") {
                     composable(route = "main") {
-                        FeaturesEntryPointScreen(features) { feature ->
+                        FeaturesEntryPointScreen(featureEntryPoints) { feature ->
                             controller.navigate(feature.id() + "navigation")
                         }
                     }
-                    features.forEach { feature ->
+                    featureEntryPoints.forEach { feature ->
                         navigation(
                             route = feature.id() + "navigation",
                             startDestination = feature.id(),
-                        ) { with(feature) { start() } }
+                        ) { with(feature) { start(controller) } }
                     }
                 }
             }
@@ -58,13 +59,13 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun FeaturesEntryPointScreen(
-    features: Set<Feature>,
-    onClick: (Feature) -> Unit
+    featureEntryPoints: Set<FeatureEntryPoint>,
+    onClick: (FeatureEntryPoint) -> Unit
 ) {
     LazyColumn(
         Modifier.fillMaxSize()
     ) {
-        items(features.toList()) { feature ->
+        items(featureEntryPoints.toList()) { feature ->
             Card(
                 onClick = { onClick(feature) }
             ) {
@@ -79,8 +80,8 @@ fun FeaturesEntryPointScreen(
 private fun FeaturesEntryPointScreenPreview() {
     MediaUseCasesTheme {
         FeaturesEntryPointScreen(
-            features = List(10) {
-                object : Feature {
+            featureEntryPoints = List(10) {
+                object : FeatureEntryPoint {
                     @Composable
                     override fun Preview() {
                         Row(
@@ -94,7 +95,7 @@ private fun FeaturesEntryPointScreenPreview() {
 
                     override fun id() = "Feature $it"
 
-                    override fun NavGraphBuilder.start() {
+                    override fun NavGraphBuilder.start(controller: NavHostController) {
 
                     }
                 }

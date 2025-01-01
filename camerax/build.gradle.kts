@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
 }
@@ -47,10 +48,15 @@ dependencies {
 
     implementation(project(":core"))
 
+    implementation(libs.kotlin.serialization.json)
+
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
     implementation(libs.navigation.compose)
+    implementation(libs.hilt.compose)
+
+    implementation(libs.bundles.camerax)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -49,13 +49,17 @@ navigation-compose = { group = "androidx.navigation", name = "navigation-compose
 hilt-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltCompose" }
 
 camerax-core = { group = "androidx.camera", name = "camera-core", version.ref = "camerax" }
+camerax-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "camerax" }
 camerax-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camerax" }
+camerax-view = { group = "androidx.camera", name = "camera-view", version.ref = "camerax" }
 
 [bundles]
 camerax = [
-    "concurrent-futures",
     "camerax-core",
-    "camerax-lifecycle"
+    "camerax-camera2",
+    "camerax-lifecycle",
+    "camerax-view",
+    "concurrent-futures"
 ]
 
 [plugins]

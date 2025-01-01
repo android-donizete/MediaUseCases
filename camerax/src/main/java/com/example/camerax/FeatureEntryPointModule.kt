@@ -1,6 +1,6 @@
 package com.example.camerax
 
-import com.example.core.Feature
+import com.example.core.FeatureEntryPoint
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -9,8 +9,8 @@ import dagger.multibindings.IntoSet
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface FeatureModule {
+interface FeatureEntryPointModule {
     @Binds
     @IntoSet
-    fun bindsCameraXFeature(impl: CameraXFeature): Feature
+    fun bindsCameraXFeatureEntryPoint(impl: CameraXFeatureEntryPoint): FeatureEntryPoint
 }

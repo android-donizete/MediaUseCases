@@ -59,9 +59,6 @@ dependencies {
     ksp(libs.hilt.compiler)
 
     implementation(libs.navigation.compose)
-    implementation(libs.hilt.compose)
-
-    implementation(libs.bundles.camerax)
 
     implementation(project(":core"))
     implementation(project(":camerax"))
