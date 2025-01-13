@@ -8,9 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,11 +29,6 @@ import com.example.core.FeatureEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.enums.EnumEntries
-
-private val PERMISSIONS = arrayOf(
-    android.Manifest.permission.CAMERA
-)
 
 @Singleton
 class CameraXFeatureEntryPoint @Inject constructor(
@@ -56,59 +49,59 @@ class CameraXFeatureEntryPoint @Inject constructor(
 
     override fun NavGraphBuilder.start(controller: NavHostController) {
         composable(route = id()) {
-            CameraXFeaturesScreen(CameraXFeature.entries) { cameraXFeature ->
-                controller.navigate(cameraXFeature.name)
+            CameraXFeaturesScreen {
+                LazyColumn() {
+                    item {
+                        Button(onClick = {
+                            controller.navigate("preview")
+                        }) {
+                            Text("Camera features")
+                        }
+                    }
+                    item {
+                       Button(onClick = {
+                            controller.navigate("preview")
+                       }) {
+                           Text("Preview")
+                       }
+                    }
+                }
             }
         }
-        CameraXFeature.entries.forEach { cameraXFeature ->
-            composable(route = cameraXFeature.name) {
-                cameraXFeature.render()
-            }
+        composable(route = "preview") {
+            CameraXFeaturePreview()
         }
     }
 }
 
 @Composable
 fun CameraXFeaturesScreen(
-    features: EnumEntries<CameraXFeature>,
-    onClick: (CameraXFeature) -> Unit
+    content: @Composable () -> Unit
 ) {
+    var isCameraGranted by remember { mutableStateOf(false) }
+
     val context = LocalContext.current
-    var isPermissionGranted by remember { mutableStateOf(false) }
     val launcher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) {
-        isPermissionGranted = it.values.all { it }
-    }
+        ActivityResultContracts.RequestPermission()
+    ) { isCameraGranted = it }
+
     LaunchedEffect(Unit) {
-        isPermissionGranted = PERMISSIONS.all { permission ->
-            PermissionChecker.checkSelfPermission(
-                context,
-                permission
-            ) == PermissionChecker.PERMISSION_GRANTED
-        }
-    }
-    if (isPermissionGranted) {
-        LazyColumn(
-            Modifier.fillMaxSize()
-        ) {
-            items(features.toList()) { cameraXFeature ->
-                Card(
-                    onClick = { onClick(cameraXFeature) }
-                ) {
-                    Text(cameraXFeature.name)
-                }
-            }
-        }
-        return
+        isCameraGranted = PermissionChecker.checkSelfPermission(
+            context,
+            android.Manifest.permission.CAMERA
+        ) == PermissionChecker.PERMISSION_GRANTED
     }
 
-    Box(Modifier.fillMaxSize()) {
-        Button(
-            onClick = { launcher.launch(PERMISSIONS) },
-            Modifier.align(Alignment.Center)
-        ) {
-            Text("We need some permissions")
+    if (isCameraGranted) {
+        content()
+    } else {
+        Box(Modifier.fillMaxSize()) {
+            Button(
+                onClick = { launcher.launch(android.Manifest.permission.CAMERA) },
+                Modifier.align(Alignment.Center)
+            ) {
+                Text("Camera access is required")
+            }
         }
     }
 }
