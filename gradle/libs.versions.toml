@@ -15,7 +15,7 @@ kotlinSerializationJson = "1.8.1"
 
 concurrentFutures = "1.2.0"
 
-hilt = "2.53.1"
+hilt = "2.56.2"
 
 navigationCompose = "2.9.0"
 hiltCompose = "1.2.0"

@@ -1,4 +1,4 @@
-package com.example.core.theme
+package com.example.mediausecases.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

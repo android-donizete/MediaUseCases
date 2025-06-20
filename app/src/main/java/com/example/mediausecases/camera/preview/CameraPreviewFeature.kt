@@ -1,4 +1,4 @@
-package com.example.camerax
+package com.example.mediausecases.camera.preview
 
 import android.content.Context
 import androidx.camera.core.CameraSelector
@@ -17,43 +17,35 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.concurrent.futures.await
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.findViewTreeLifecycleOwner
-import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.viewModelScope
+import com.example.mediausecases.camera.wrapper.CameraPreviewWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @Composable
-fun CameraXFeaturePreview() {
-    val viewModel = hiltViewModel<CameraXFeaturePreviewViewModel>()
-    CameraXFeaturePreview(
+fun CameraPreviewFeature() {
+    val viewModel = hiltViewModel<CameraPreviewViewModel>()
+    CameraPreviewInit(
         viewModel.state,
         viewModel::initPreview
     )
 }
 
 @Composable
-private fun CameraXFeaturePreview(
-    state: CameraXFeaturePreviewState,
-    initPreview: (PreviewView) -> Unit
+private fun CameraPreviewInit(
+    state: CameraPreviewState,
+    onPreviewInit: (PreviewView) -> Unit
 ) {
     Box(Modifier.fillMaxSize()) {
-        val lifecycle = LocalLifecycleOwner.current
-        AndroidView(
-            factory = {
-                PreviewView(it).apply {
-                    setViewTreeLifecycleOwner(lifecycle)
-                    initPreview(this)
-                }
-            }
+        CameraPreviewWrapper(
+            onInit = onPreviewInit
         )
         if (state.isLoading) {
             Spacer(
@@ -66,15 +58,15 @@ private fun CameraXFeaturePreview(
     }
 }
 
-data class CameraXFeaturePreviewState(
+data class CameraPreviewState(
     val isLoading: Boolean = true
 )
 
 @HiltViewModel
-class CameraXFeaturePreviewViewModel @Inject constructor(
+class CameraPreviewViewModel @Inject constructor(
     @ApplicationContext private val context: Context
 ) : ViewModel() {
-    var state by mutableStateOf(CameraXFeaturePreviewState())
+    var state by mutableStateOf(CameraPreviewState())
         private set
 
     fun initPreview(view: PreviewView) {

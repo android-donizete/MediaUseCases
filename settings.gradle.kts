@@ -21,5 +21,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "MediaUseCases"
 include(":app")
-include(":core")
-include(":camerax")
